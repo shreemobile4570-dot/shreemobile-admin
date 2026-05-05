@@ -125,19 +125,18 @@ const Addproduct = () => {
   colorState.forEach((i) => {
     coloropt.push({
       label: (
-        <div className="col-3">
-          <ul
-            className="colors ps-0"
+        <div className="d-flex align-items-center gap-2">
+          <span
             style={{
+              display: "inline-block",
               width: "20px",
               height: "20px",
-              marginBottom: "10px",
               backgroundColor: i.title,
-              borderRadius: "50%", // Added inline style for rounded shape
-              listStyle: "none", // Hide bullet points
-              border: "2px solid transparent",
+              borderRadius: "50%",
+              border: "1px solid #ddd",
             }}
-          ></ul>
+          ></span>
+          <span>{i.title}</span>
         </div>
       ),
       value: i._id,
