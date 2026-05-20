@@ -154,6 +154,9 @@ const Addproduct = () => {
     { label: "Popular", value: "popular" },
     { label: "Special", value: "special" },
     { label: "New Arrival", value: "new-arrival" },
+    { label: "Accessories", value: "accessories" },
+    { label: "Spare Parts", value: "spare-parts" },
+    { label: "Cover", value: "cover" },
   ];
   const imageColorOptions = colorState.map((colorItem) => ({
     value: colorItem._id,
