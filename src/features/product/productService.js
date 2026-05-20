@@ -26,6 +26,8 @@ const updateProduct = async (product) => {
       title: product.productData.title,
       description: product.productData.description,
       price: product.productData.price,
+      wholesellerPrice: product.productData.wholesellerPrice,
+      retailerPrice: product.productData.retailerPrice,
       brand: product.productData.brand,
       quantity: product.productData.quantity,
       category: product.productData.category,

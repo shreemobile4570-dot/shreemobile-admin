@@ -38,6 +38,14 @@ const columns = [
     sorter: (a, b) => a.price - b.price,
   },
   {
+    title: "Wholeseller",
+    dataIndex: "wholesellerPrice",
+  },
+  {
+    title: "Retailer",
+    dataIndex: "retailerPrice",
+  },
+  {
     title: "Action",
     dataIndex: "action",
   },
@@ -61,7 +69,7 @@ const Productlist = () => {
       getProducts({
         params: {
           limit: 200,
-          fields: "title,brand,category,quantity,price,createdAt",
+          fields: "title,brand,category,quantity,price,wholesellerPrice,retailerPrice,createdAt",
         },
       })
     );
@@ -81,6 +89,8 @@ const Productlist = () => {
       color: productState[i].color,
       quantity: productState[i].quantity,
       price: `${productState[i].price}`,
+      wholesellerPrice: `${productState[i].wholesellerPrice || productState[i].price}`,
+      retailerPrice: `${productState[i].retailerPrice || productState[i].price}`,
       action: (
         <>
           <Link

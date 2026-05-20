@@ -26,6 +26,8 @@ let schema = yup.object().shape({
   title: yup.string().required("Title is Required"),
   description: yup.string().required("Description is Required"),
   price: yup.number().required("Price is Required"),
+  wholesellerPrice: yup.number().min(0, "Wholeseller price cannot be negative"),
+  retailerPrice: yup.number().min(0, "Retailer price cannot be negative"),
   brand: yup.string().required("Brand is Required"),
   category: yup.string().required("Category is Required"),
   tags: yup
@@ -79,6 +81,8 @@ const Addproduct = () => {
     productName,
     productDesc,
     productPrice,
+    productWholesellerPrice,
+    productRetailerPrice,
     productBrand,
     productCategory,
     productTag,
@@ -210,6 +214,8 @@ const Addproduct = () => {
       title: productName || "",
       description: productDesc || "",
       price: productPrice || "",
+      wholesellerPrice: productWholesellerPrice || "",
+      retailerPrice: productRetailerPrice || "",
       brand: productBrand || "",
       category: productCategory || "",
       tags: Array.isArray(productTag)
@@ -301,7 +307,7 @@ const Addproduct = () => {
           </div>
           <CustomInput
             type="number"
-            label="Enter Product Price"
+            label="Enter User Price"
             name="price"
             onChng={formik.handleChange("price")}
             onBlr={formik.handleBlur("price")}
@@ -309,6 +315,28 @@ const Addproduct = () => {
           />
           <div className="error">
             {formik.touched.price && formik.errors.price}
+          </div>
+          <CustomInput
+            type="number"
+            label="Enter Wholeseller Price"
+            name="wholesellerPrice"
+            onChng={formik.handleChange("wholesellerPrice")}
+            onBlr={formik.handleBlur("wholesellerPrice")}
+            val={formik.values.wholesellerPrice}
+          />
+          <div className="error">
+            {formik.touched.wholesellerPrice && formik.errors.wholesellerPrice}
+          </div>
+          <CustomInput
+            type="number"
+            label="Enter Retailer Price"
+            name="retailerPrice"
+            onChng={formik.handleChange("retailerPrice")}
+            onBlr={formik.handleBlur("retailerPrice")}
+            val={formik.values.retailerPrice}
+          />
+          <div className="error">
+            {formik.touched.retailerPrice && formik.errors.retailerPrice}
           </div>
           <select
             name="brand"

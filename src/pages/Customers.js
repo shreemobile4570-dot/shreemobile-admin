@@ -1,52 +1,119 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react";
-import { Table } from "antd";
+import { Button, Select, Table, Tag } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { getUsers } from "../features/cutomers/customerSlice";
-const columns = [
-  {
-    title: "SNo",
-    dataIndex: "key",
-  },
-  {
-    title: "Name",
-    dataIndex: "name",
-    sorter: (a, b) => a.name.length - b.name.length,
-  },
-  {
-    title: "Email",
-    dataIndex: "email",
-  },
-  {
-    title: "Mobile",
-    dataIndex: "mobile",
-  },
+import {
+  blockCustomer,
+  getUsers,
+  unblockCustomer,
+  updateCustomer,
+} from "../features/cutomers/customerSlice";
+
+const roleOptions = [
+  { label: "Admin", value: "admin" },
+  { label: "User", value: "user" },
+  { label: "Wholeseller", value: "wholeseller" },
+  { label: "Retailer", value: "retailer" },
 ];
 
 const Customers = () => {
   const dispatch = useDispatch();
+  const customerstate = useSelector((state) => state.customer.customers);
+  const isLoading = useSelector((state) => state.customer.isLoading);
+
   useEffect(() => {
     dispatch(getUsers());
   }, []);
-  const customerstate = useSelector((state) => state.customer.customers);
-  const data1 = [];
-  for (let i = 0; i < customerstate.length; i++) {
-    if (customerstate[i].role !== "admin") {
-      data1.push({
-        key: i + 1,
-        name: customerstate[i].firstname + " " + customerstate[i].lastname,
-        email: customerstate[i].email,
-        mobile: customerstate[i].mobile,
-      });
+
+  const handleRoleChange = async (id, role) => {
+    await dispatch(updateCustomer({ id, data: { role } }));
+  };
+
+  const handleBlockToggle = async (customer) => {
+    if (customer.isBlocked) {
+      await dispatch(unblockCustomer(customer._id));
+    } else {
+      await dispatch(blockCustomer(customer._id));
     }
-  }
+  };
+
+  const columns = [
+    {
+      title: "SNo",
+      dataIndex: "key",
+      width: 70,
+    },
+    {
+      title: "Name",
+      dataIndex: "name",
+      sorter: (a, b) => a.name.localeCompare(b.name),
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+    },
+    {
+      title: "Mobile",
+      dataIndex: "mobile",
+    },
+    {
+      title: "Address",
+      dataIndex: "address",
+      ellipsis: true,
+    },
+    {
+      title: "Role",
+      dataIndex: "role",
+      render: (_, record) => (
+        <Select
+          value={record.role}
+          options={roleOptions}
+          style={{ minWidth: 135 }}
+          onChange={(role) => handleRoleChange(record.id, role)}
+        />
+      ),
+    },
+    {
+      title: "Status",
+      dataIndex: "isBlocked",
+      render: (isBlocked) =>
+        isBlocked ? <Tag color="red">Blocked</Tag> : <Tag color="green">Active</Tag>,
+    },
+    {
+      title: "Action",
+      dataIndex: "action",
+      render: (_, record) => (
+        <Button
+          danger={!record.isBlocked}
+          type={record.isBlocked ? "default" : "primary"}
+          onClick={() => handleBlockToggle(record)}
+        >
+          {record.isBlocked ? "Unblock" : "Block"}
+        </Button>
+      ),
+    },
+  ];
+
+  const data = customerstate.map((customer, index) => ({
+    key: index + 1,
+    id: customer._id,
+    name: `${customer.firstname || ""} ${customer.lastname || ""}`.trim(),
+    email: customer.email,
+    mobile: customer.mobile,
+    address: customer.address || "-",
+    role: customer.role || "user",
+    isBlocked: customer.isBlocked,
+  }));
 
   return (
     <div>
       <h3 className="mb-4 title">Customers</h3>
-      <div>
-        <Table columns={columns} dataSource={data1} />
-      </div>
+      <Table
+        columns={columns}
+        dataSource={data}
+        loading={isLoading}
+        scroll={{ x: 1100 }}
+      />
     </div>
   );
 };

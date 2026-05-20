@@ -8,8 +8,31 @@ const getUsers = async () => {
   return response.data;
 };
 
+const updateUser = async (user) => {
+  const response = await axios.put(
+    `${base_url}user/admin-update-user/${user.id}`,
+    user.data,
+    getAuthConfig()
+  );
+
+  return response.data;
+};
+
+const blockUser = async (id) => {
+  const response = await axios.put(`${base_url}user/block-user/${id}`, {}, getAuthConfig());
+  return response.data;
+};
+
+const unblockUser = async (id) => {
+  const response = await axios.put(`${base_url}user/unblock-user/${id}`, {}, getAuthConfig());
+  return response.data;
+};
+
 const customerService = {
   getUsers,
+  updateUser,
+  blockUser,
+  unblockUser,
 };
 
 export default customerService;

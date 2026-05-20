@@ -11,6 +11,39 @@ export const getUsers = createAsyncThunk(
     }
   }
 );
+
+export const updateCustomer = createAsyncThunk(
+  "customer/update-customer",
+  async (user, thunkAPI) => {
+    try {
+      return await customerService.updateUser(user);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const blockCustomer = createAsyncThunk(
+  "customer/block-customer",
+  async (id, thunkAPI) => {
+    try {
+      return await customerService.blockUser(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const unblockCustomer = createAsyncThunk(
+  "customer/unblock-customer",
+  async (id, thunkAPI) => {
+    try {
+      return await customerService.unblockUser(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 const initialState = {
   customers: [],
   isError: false,
@@ -38,6 +71,21 @@ export const customerSlice = createSlice({
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
+      })
+      .addCase(updateCustomer.fulfilled, (state, action) => {
+        state.customers = state.customers.map((customer) =>
+          customer._id === action.payload._id ? action.payload : customer
+        );
+      })
+      .addCase(blockCustomer.fulfilled, (state, action) => {
+        state.customers = state.customers.map((customer) =>
+          customer._id === action.payload._id ? action.payload : customer
+        );
+      })
+      .addCase(unblockCustomer.fulfilled, (state, action) => {
+        state.customers = state.customers.map((customer) =>
+          customer._id === action.payload._id ? action.payload : customer
+        );
       });
   },
 });
