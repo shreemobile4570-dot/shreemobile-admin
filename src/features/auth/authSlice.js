@@ -129,8 +129,16 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.updateorder = action.payload;
+        if (state.singleorder?.orders?._id === action.payload?.orders?._id) {
+          state.singleorder = action.payload;
+        }
+        if (state.orders?.orders?.length && action.payload?.orders?._id) {
+          state.orders.orders = state.orders.orders.map((order) =>
+            order._id === action.payload.orders._id ? action.payload.orders : order
+          );
+        }
         if (state.isSuccess === true) {
-          toast.success("Order Status Changed");
+          toast.success("Order updated");
         }
       })
       .addCase(updateAOrder.rejected, (state, action) => {

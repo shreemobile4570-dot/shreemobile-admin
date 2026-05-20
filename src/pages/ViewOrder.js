@@ -1,8 +1,8 @@
 import React, { useEffect, useCallback } from "react";
-import { Table } from "antd";
+import { Checkbox, Table, Tag } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getaOrder } from "../features/auth/authSlice";
+import { getaOrder, updateAOrder } from "../features/auth/authSlice";
 const columns = [
   {
     title: "SNo",
@@ -32,6 +32,14 @@ const columns = [
     title: "Amount",
     dataIndex: "amount",
   },
+  {
+    title: "Available",
+    dataIndex: "available",
+  },
+  {
+    title: "Customer Note",
+    dataIndex: "availabilityNote",
+  },
 ];
 
 const ViewOrder = () => {
@@ -52,8 +60,25 @@ const ViewOrder = () => {
   }, [loadOrder]);
 
   const orderState = singleorder?.orders;
+  const updateAvailability = async (itemId, isAvailable) => {
+    await dispatch(
+      updateAOrder({
+        id: orderId,
+        availabilityItems: [
+          {
+            itemId,
+            isAvailable,
+            availabilityNote: isAvailable ? "" : "Currently not available",
+          },
+        ],
+      })
+    );
+    loadOrder();
+  };
+
   const data1 = (orderState?.orderItems || []).map((item, index) => ({
       key: index + 1,
+      itemId: item?._id,
       name: item?.product?.title || "Product unavailable",
       brand: item?.product?.brand || "-",
       count: item?.quantity,
@@ -74,6 +99,20 @@ const ViewOrder = () => {
         </div>
       ),
       size: item?.size?.title || "-",
+      available: (
+        <Checkbox
+          checked={item?.isAvailable !== false}
+          onChange={(e) => updateAvailability(item?._id, e.target.checked)}
+        >
+          {item?.isAvailable === false ? "Not available" : "Available"}
+        </Checkbox>
+      ),
+      availabilityNote:
+        item?.isAvailable === false ? (
+          <Tag color="red">{item?.availabilityNote || "Currently not available"}</Tag>
+        ) : (
+          <Tag color="green">Ready</Tag>
+        ),
     }));
 
   return (

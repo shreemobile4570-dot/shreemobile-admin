@@ -45,7 +45,7 @@ const getOrder = async (id) => {
 const updateOrder = async (data) => {
   const response = await axios.put(
     `${base_url}user/updateOrder/${data.id}`,
-    { status: data.status },
+    { status: data.status, availabilityItems: data.availabilityItems },
     withAuth()
   );
 
