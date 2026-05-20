@@ -36,7 +36,7 @@ const Login = () => {
     }
   }, [isSuccess, navigate]);
   return (
-    <div className="py-5" style={{ background: "#ffd333", minHeight: "100vh" }}>
+    <div className="py-5 admin-login-page">
       <br />
       <br />
       <br />
@@ -76,7 +76,7 @@ const Login = () => {
           <div className="mb-3 text-end"></div>
           <button
             className="border-0 px-3 py-2 text-white fw-bold w-100 text-center text-decoration-none fs-5"
-            style={{ background: "#ffd333" }}
+            style={{ background: "#c9a962" }}
             type="submit"
             disabled={isLoading}
           >
