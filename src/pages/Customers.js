@@ -30,10 +30,13 @@ const Customers = () => {
   };
 
   const handleBlockToggle = async (customer) => {
+    const customerId = customer._id || customer.id;
+    if (!customerId) return;
+
     if (customer.isBlocked) {
-      await dispatch(unblockCustomer(customer._id));
+      await dispatch(unblockCustomer(customerId));
     } else {
-      await dispatch(blockCustomer(customer._id));
+      await dispatch(blockCustomer(customerId));
     }
   };
 
@@ -77,7 +80,7 @@ const Customers = () => {
       title: "Status",
       dataIndex: "isBlocked",
       render: (isBlocked) =>
-        isBlocked ? <Tag color="red">Blocked</Tag> : <Tag color="green">Active</Tag>,
+        isBlocked ? <Tag color="red">Inactive</Tag> : <Tag color="green">Active</Tag>,
     },
     {
       title: "Action",
@@ -135,7 +138,7 @@ const Customers = () => {
                 <p>{customer.mobile || "Phone not available"}</p>
               </div>
               {customer.isBlocked ? (
-                <Tag color="red">Blocked</Tag>
+                <Tag color="red">Inactive</Tag>
               ) : (
                 <Tag color="green">Active</Tag>
               )}
