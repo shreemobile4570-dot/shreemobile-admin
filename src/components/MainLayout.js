@@ -28,8 +28,15 @@ const MainLayout = () => {
   } = theme.useToken();
   const navigate = useNavigate();
   return (
-    <Layout /* onContextMenu={(e) => e.preventDefault()} */>
-      <Sider trigger={null} collapsible collapsed={collapsed}>
+    <Layout className="admin-root" /* onContextMenu={(e) => e.preventDefault()} */>
+      <Sider
+        className="admin-sider"
+        trigger={null}
+        collapsible
+        collapsed={collapsed}
+        breakpoint="lg"
+        onBreakpoint={(broken) => setCollapsed(broken)}
+      >
         <div className="logo">
           <h2 className="text-white fs-5 text-center py-3 mb-0">
             <span className="sm-logo">CC</span>
@@ -180,7 +187,7 @@ const MainLayout = () => {
       </Sider>
       <Layout className="site-layout">
         <Header
-          className="d-flex justify-content-between ps-1 pe-5"
+          className="admin-header d-flex justify-content-between ps-1 pe-5"
           style={{
             padding: 0,
             background: colorBgContainer,
@@ -193,7 +200,7 @@ const MainLayout = () => {
               onClick: () => setCollapsed(!collapsed),
             }
           )}
-          <div className="d-flex gap-4 align-items-center">
+          <div className="admin-profile d-flex gap-4 align-items-center">
             <div className="d-flex gap-3 align-items-center dropdown">
               <div>
                 <img
@@ -236,6 +243,7 @@ const MainLayout = () => {
           </div>
         </Header>
         <Content
+          className="admin-content"
           style={{
             margin: "24px 16px",
             padding: 24,

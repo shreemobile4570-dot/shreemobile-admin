@@ -1,203 +1,167 @@
 import React, { useEffect } from "react";
-import { Table } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getOrders, updateAOrder } from "../features/auth/authSlice";
 
+const orderSteps = ["Ordered", "Processed", "Shipped", "Out for Delivery", "Delivered"];
+
 const Orders = () => {
   const dispatch = useDispatch();
+  const orderState = useSelector((state) => state?.auth?.orders?.orders);
 
   useEffect(() => {
     dispatch(getOrders({ params: { limit: 100 } }));
   }, [dispatch]);
 
-  const orderState = useSelector((state) => state?.auth?.orders?.orders);
-
-  // ✅ Columns
-  const columns = [
-    {
-      title: "SNo",
-      dataIndex: "key",
-    },
-    {
-      title: "Name",
-      dataIndex: "name",
-    },
-    {
-      title: "Product",
-      dataIndex: "product",
-    },
-    {
-      title: "Amount",
-      dataIndex: "amount",
-    },
-    {
-      title: "Payment Mode",
-      dataIndex: "paymentMethod",
-    },
-    {
-      title: "Payment Status",
-      dataIndex: "paymentStatus",
-    },
-    {
-      title: "Shipping Details",
-      dataIndex: "shipping",
-    },
-    {
-      title: "Date",
-      dataIndex: "date",
-    },
-    {
-      title: "Action",
-      dataIndex: "action",
-    },
-  ];
-
-  // ✅ Update Order Status
   const updateOrderStatus = async (id, status) => {
     await dispatch(updateAOrder({ id, status }));
     dispatch(getOrders({ params: { limit: 100 } }));
   };
 
-  // ✅ Table Data
-  const data1 = [];
+  const getStepIndex = (status) => {
+    const index = orderSteps.findIndex(
+      (step) => step.toLowerCase() === String(status || "").toLowerCase()
+    );
+    return index >= 0 ? index : 0;
+  };
 
-  // for (let i = 0; i < (orderState?.length || 0); i++) {
-  //   data1.push({
-  //     key: i + 1,
-  //     name: orderState[i]?.user?.firstname || "User",
-
-  //     product: (
-  //       <Link to={`/admin/order/${orderState[i]?._id}`}>
-  //         View Orders
-  //       </Link>
-  //     ),
-
-  //     amount: `₹ ${orderState[i]?.totalPrice || 0}`,
-
-  //     // ✅ Payment Mode
-  //     paymentMethod: orderState[i]?.paymentMethod || "N/A",
-
-  //     // ✅ Payment Status with styling
-  //     paymentStatus: (
-  //       <span
-  //         style={{
-  //           color:
-  //             orderState[i]?.paymentStatus === "paid"
-  //               ? "green"
-  //               : "orange",
-  //           fontWeight: "bold",
-  //           textTransform: "capitalize",
-  //         }}
-  //       >
-  //         {orderState[i]?.paymentStatus || "pending"}
-  //       </span>
-  //     ),
-
-  //     date: new Date(orderState[i]?.createdAt).toLocaleString(),
-
-  //     action: (
-  //       <select
-  //         defaultValue={orderState[i]?.orderStatus}
-  //         onChange={(e) =>
-  //           updateOrderStatus(orderState[i]?._id, e.target.value)
-  //         }
-  //         className="form-control form-select"
-  //       >
-  //         <option value="Ordered" disabled>
-  //           Ordered
-  //         </option>
-  //         <option value="Processed">Processed</option>
-  //         <option value="Shipped">Shipped</option>
-  //         <option value="Out for Delivery">Out for Delivery</option>
-  //         <option value="Delivered">Delivered</option>
-  //       </select>
-  //     ),
-  //   });
-  // }
-  for (let i = 0; i < (orderState?.length || 0); i++) {
-  data1.push({
-    key: i + 1,
-
-    name: orderState[i]?.user?.firstname || "User",
-
-    product: (
-      <Link to={`/admin/order/${orderState[i]?._id}`}>
-        View Orders
-      </Link>
-    ),
-
-    amount: `₹ ${orderState[i]?.totalPrice || 0}`,
-
-    // ✅ FIXED Payment Mode
-    paymentMethod:
-      orderState[i]?.paymentInfo?.paymentMethod || "N/A",
-
-    // ✅ FIXED Payment Status
-    paymentStatus: (
-      <span
-        style={{
-          color:
-            orderState[i]?.paymentInfo?.paymentStatus === "paid"
-              ? "green"
-              : "orange",
-          fontWeight: "bold",
-          textTransform: "capitalize",
-        }}
-      >
-        {orderState[i]?.paymentInfo?.paymentStatus || "pending"}
-      </span>
-    ),
-
-    // ✅ NEW SHIPPING UI (clean card style)
-    shipping: (
-      <div className="shipping-box">
-        <strong>
-          {orderState[i]?.shippingInfo?.firstname}{" "}
-          {orderState[i]?.shippingInfo?.lastname}
-        </strong>
-
-        <div className="shipping-address">
-          {orderState[i]?.shippingInfo?.address}
-        </div>
-
-        <div className="shipping-address">
-          {orderState[i]?.shippingInfo?.other}
-        </div>
-
-        <div className="shipping-meta">
-          {orderState[i]?.shippingInfo?.city} -{" "}
-          {orderState[i]?.shippingInfo?.pincode}
-        </div>
-      </div>
-    ),
-
-    date: new Date(orderState[i]?.createdAt).toLocaleString(),
-
-    action: (
-      <select
-        defaultValue={orderState[i]?.orderStatus}
-        onChange={(e) =>
-          updateOrderStatus(orderState[i]?._id, e.target.value)
-        }
-        className="form-control form-select"
-      >
-        <option value="Ordered" disabled>
-          Ordered
-        </option>
-        <option value="Processed">Processed</option>
-        <option value="Shipped">Shipped</option>
-        <option value="Out for Delivery">Out for Delivery</option>
-        <option value="Delivered">Delivered</option>
-      </select>
-    ),
-  });
-}
+  const getCustomerName = (order) =>
+    `${order?.shippingInfo?.firstname || order?.user?.firstname || ""} ${
+      order?.shippingInfo?.lastname || order?.user?.lastname || ""
+    }`.trim() || "Customer";
 
   return (
-    <div>
-      <h3 className="mb-4 title">Orders</h3>
-      <Table columns={columns} dataSource={data1} />
+    <div className="admin-orders-page">
+      <div className="admin-page-head">
+        <div>
+          <span>Operations</span>
+          <h3 className="title mb-0">Orders</h3>
+        </div>
+        <p>{orderState?.length || 0} order{orderState?.length === 1 ? "" : "s"}</p>
+      </div>
+
+      {!orderState?.length && <div className="admin-empty-state">No orders found.</div>}
+
+      <div className="admin-orders-list">
+        {orderState?.map((order) => {
+          const activeStep = getStepIndex(order?.orderStatus);
+          const progressPercent =
+            orderSteps.length > 1 ? (activeStep / (orderSteps.length - 1)) * 100 : 0;
+          const paymentMethod = order?.paymentMethod || order?.paymentInfo?.paymentMethod || "N/A";
+          const paymentStatus = order?.paymentStatus || order?.paymentInfo?.paymentStatus || "pending";
+
+          return (
+            <article className="admin-order-card" key={order?._id}>
+              <div className="admin-order-top">
+                <div>
+                  <span className="admin-order-label">Order ID</span>
+                  <h4>{order?._id}</h4>
+                  <p>{order?.createdAt ? new Date(order.createdAt).toLocaleString() : ""}</p>
+                </div>
+                <span className="admin-order-status">{order?.orderStatus || "Ordered"}</span>
+              </div>
+
+              <div className="admin-order-summary">
+                <div>
+                  <span>Total</span>
+                  <strong>Rs. {order?.totalPrice || 0}</strong>
+                </div>
+                <div>
+                  <span>Payable</span>
+                  <strong>Rs. {order?.totalPriceAfterDiscount || order?.totalPrice || 0}</strong>
+                </div>
+                <div>
+                  <span>Payment</span>
+                  <strong>{paymentMethod}</strong>
+                </div>
+                <div>
+                  <span>Status</span>
+                  <strong className={paymentStatus === "paid" ? "green" : "admin-warn"}>
+                    {paymentStatus}
+                  </strong>
+                </div>
+                <div>
+                  <span>Items</span>
+                  <strong>{order?.orderItems?.length || 0}</strong>
+                </div>
+              </div>
+
+              <div className="admin-order-body">
+                <section className="admin-customer-card">
+                  <span className="admin-order-label">Customer Details</span>
+                  <h5>{getCustomerName(order)}</h5>
+                  <p>{order?.user?.email || "Email not available"}</p>
+                  <p>{order?.user?.mobile || "Phone not available"}</p>
+                  <address>
+                    {order?.shippingInfo?.address || "Address not available"}
+                    {order?.shippingInfo?.other ? `, ${order.shippingInfo.other}` : ""}
+                    <br />
+                    {order?.shippingInfo?.city || "-"} - {order?.shippingInfo?.pincode || "-"}
+                    {order?.shippingInfo?.state ? `, ${order.shippingInfo.state}` : ""}
+                  </address>
+                </section>
+
+                <section className="admin-order-items">
+                  <span className="admin-order-label">Products</span>
+                  {order?.orderItems?.slice(0, 3).map((item, index) => (
+                    <div className="admin-order-item" key={`${order?._id}-${index}`}>
+                      <div>
+                        <strong>{item?.product?.title || "Product"}</strong>
+                        <p>Qty: {item?.quantity} | Rs. {item?.price}</p>
+                      </div>
+                      {item?.isAvailable === false && (
+                        <span className="admin-unavailable">Not available</span>
+                      )}
+                    </div>
+                  ))}
+                  {(order?.orderItems?.length || 0) > 3 && (
+                    <p className="admin-more-items">+{order.orderItems.length - 3} more product(s)</p>
+                  )}
+                </section>
+              </div>
+
+              <div className="admin-order-progress" aria-label={`Order status ${order?.orderStatus}`}>
+                <div className="admin-order-track">
+                  <div
+                    className="admin-order-fill"
+                    style={{ width: `${progressPercent}%` }}
+                  ></div>
+                </div>
+                <div className="admin-order-steps">
+                  {orderSteps.map((step, index) => (
+                    <div
+                      key={step}
+                      className={`admin-order-step ${index <= activeStep ? "complete" : ""}`}
+                    >
+                      <span>{index + 1}</span>
+                      <p>{step}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="admin-order-actions">
+                <Link className="admin-view-order" to={`/admin/order/${order?._id}`}>
+                  Checklist
+                </Link>
+                <select
+                  value={order?.orderStatus || "Ordered"}
+                  onChange={(e) => updateOrderStatus(order?._id, e.target.value)}
+                  className="form-control form-select"
+                >
+                  <option value="Ordered" disabled>
+                    Ordered
+                  </option>
+                  <option value="Processed">Processed</option>
+                  <option value="Shipped">Shipped</option>
+                  <option value="Out for Delivery">Out for Delivery</option>
+                  <option value="Delivered">Delivered</option>
+                </select>
+              </div>
+            </article>
+          );
+        })}
+      </div>
     </div>
   );
 };

@@ -12,7 +12,7 @@ body {
 }
 
 .trigger {
-  padding: 0 24px;
+  padding: 0 clamp(12px, 2vw, 24px);
   font-size: 18px;
   line-height: 64px;
   cursor: pointer;
@@ -92,8 +92,8 @@ body {
 }
 
 main {
-  height: 85vh;
-  overflow-y: scroll;
+  min-height: calc(100vh - 64px);
+  overflow-y: auto;
   background-color: transparent !important;
 }
 main::-webkit-scrollbar {
@@ -117,4 +117,96 @@ main::-webkit-scrollbar {
 .error {
   color: red;
   font-size: 12px;
+}
+
+.admin-root {
+  min-height: 100vh;
+}
+
+.admin-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  min-height: 64px;
+  border-bottom: 1px solid rgba(33, 37, 41, 0.08);
+  background: rgba(255, 255, 255, 0.82) !important;
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+}
+
+.admin-content {
+  border: 1px solid rgba(255, 255, 255, 0.58);
+  border-radius: 18px;
+  box-shadow: 0 20px 56px rgba(33, 37, 41, 0.12);
+  background: rgba(255, 255, 255, 0.78) !important;
+  backdrop-filter: blur(18px) saturate(145%);
+  -webkit-backdrop-filter: blur(18px) saturate(145%);
+}
+
+.ant-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.ant-table {
+  min-width: 760px;
+}
+
+@media (max-width: 991px) {
+  .ant-layout-sider {
+    position: fixed !important;
+    inset: 0 auto 0 0;
+    z-index: 40;
+    height: 100vh;
+  }
+
+  .ant-layout-sider-collapsed {
+    flex: 0 0 0 !important;
+    max-width: 0 !important;
+    min-width: 0 !important;
+    width: 0 !important;
+    overflow: hidden;
+  }
+
+  .site-layout {
+    width: 100%;
+  }
+
+  .admin-header {
+    padding-right: 16px !important;
+  }
+
+  .admin-content {
+    margin: 16px 12px !important;
+    padding: 18px !important;
+    border-radius: 14px;
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-profile img,
+  .admin-profile p {
+    display: none;
+  }
+
+  .admin-profile h5 {
+    font-size: 13px;
+  }
+
+  .trigger {
+    line-height: 58px;
+  }
+
+  .admin-header {
+    min-height: 58px;
+  }
+
+  .admin-content {
+    margin: 12px 8px !important;
+    padding: 14px !important;
+  }
+
+  .title {
+    font-size: 22px !important;
+  }
 }
