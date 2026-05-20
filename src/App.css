@@ -27,18 +27,18 @@
   border-color: var(--color-c3d4da);
 }
 .title {
-  font: 28px;
+  font-size: 28px;
   font-family: Roboto !important;
   color: var(--color-212529);
 }
 
 .sub-title {
-  font: 24px;
+  font-size: 24px;
   font-family: Roboto !important;
   color: var(--color-212529);
 }
 .desc {
-  font: 14px;
+  font-size: 14px;
   font-family: Roboto !important;
   color: var(--color-828599);
 }
@@ -78,11 +78,11 @@
 
 .admin-orders-list {
   display: grid;
-  gap: 18px;
+  gap: 14px;
 }
 
 .admin-order-card {
-  padding: clamp(16px, 2.2vw, 24px);
+  padding: clamp(14px, 2vw, 20px);
   border: 1px solid rgba(255, 255, 255, 0.64);
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.72);
@@ -138,13 +138,13 @@
 
 .admin-order-summary {
   display: grid;
-  grid-template-columns: repeat(5, minmax(120px, 1fr));
-  gap: 10px;
-  margin: 18px 0;
+  grid-template-columns: repeat(5, minmax(104px, 1fr));
+  gap: 8px;
+  margin: 14px 0;
 }
 
 .admin-order-summary > div {
-  padding: 12px;
+  padding: 10px;
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.64);
   border: 1px solid rgba(33, 37, 41, 0.07);
@@ -170,13 +170,13 @@
 .admin-order-body {
   display: grid;
   grid-template-columns: minmax(240px, 0.95fr) minmax(280px, 1.25fr);
-  gap: 14px;
+  gap: 10px;
 }
 
 .admin-customer-card,
 .admin-order-items {
   min-width: 0;
-  padding: 15px;
+  padding: 12px;
   border: 1px solid rgba(33, 37, 41, 0.08);
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.56);
@@ -221,7 +221,7 @@
 }
 
 .admin-order-progress {
-  margin: 20px 0;
+  margin: 14px 0;
 }
 
 .admin-order-track {
@@ -288,6 +288,111 @@
   max-width: 230px;
 }
 
+.admin-checklist-toolbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 280px);
+  gap: 14px;
+  align-items: end;
+  margin-bottom: 16px;
+  padding: 14px;
+  border: 1px solid rgba(33, 37, 41, 0.08);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.62);
+}
+
+.admin-checklist-toolbar strong {
+  display: block;
+  overflow-wrap: anywhere;
+  color: var(--color-212529);
+}
+
+.admin-checklist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.admin-checklist-card {
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.64);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 12px 30px rgba(33, 37, 41, 0.08);
+}
+
+.admin-checklist-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.admin-checklist-top h4 {
+  display: -webkit-box;
+  margin: 4px 0;
+  overflow: hidden;
+  color: var(--color-212529);
+  font-size: 0.98rem;
+  font-weight: 800;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.admin-checklist-top p,
+.admin-checklist-note {
+  margin: 0;
+  color: var(--color-828599);
+  font-size: 0.84rem;
+}
+
+.admin-checklist-meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 12px 0;
+  color: var(--color-828599);
+  font-size: 0.84rem;
+}
+
+.admin-checklist-meta strong {
+  color: var(--color-212529);
+}
+
+.admin-checklist-color {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.admin-checklist-color i {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px rgba(33, 37, 41, 0.16);
+}
+
+.admin-checklist-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(255, 211, 51, 0.18);
+  color: var(--color-212529);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.admin-checklist-note {
+  margin-top: 9px;
+  padding: 9px 10px;
+  border-radius: 10px;
+  color: #b42318;
+  background: rgba(180, 35, 24, 0.1);
+}
+
 @media (max-width: 1100px) {
   .admin-order-summary {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -309,6 +414,10 @@
     max-width: none;
     width: 100%;
   }
+
+  .admin-checklist-toolbar {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 640px) {
@@ -322,19 +431,173 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .admin-orders-list {
+    gap: 10px;
+  }
+
+  .admin-order-card {
+    padding: 11px;
+    border-radius: 12px;
+  }
+
+  .admin-order-top {
+    gap: 7px;
+  }
+
+  .admin-order-top h4 {
+    display: -webkit-box;
+    margin: 2px 0;
+    font-size: 0.9rem;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+  }
+
+  .admin-order-top p,
+  .admin-customer-card p,
+  .admin-customer-card address,
+  .admin-order-item p,
+  .admin-more-items {
+    font-size: 0.78rem;
+  }
+
+  .admin-order-label {
+    font-size: 0.62rem;
+  }
+
+  .admin-order-status,
+  .admin-view-order,
+  .admin-unavailable {
+    min-height: 30px;
+    padding: 5px 10px;
+    font-size: 0.72rem;
+  }
+
+  .admin-order-summary {
+    gap: 7px;
+    margin: 10px 0;
+  }
+
+  .admin-order-summary > div {
+    padding: 8px;
+    border-radius: 10px;
+  }
+
+  .admin-order-summary span {
+    margin-bottom: 2px;
+    font-size: 0.68rem;
+  }
+
+  .admin-order-summary strong {
+    font-size: 0.82rem;
+  }
+
+  .admin-customer-card,
+  .admin-order-items {
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  .admin-customer-card h5 {
+    margin: 4px 0;
+    font-size: 0.88rem;
+  }
+
+  .admin-customer-card address {
+    display: -webkit-box;
+    margin-top: 5px;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+
+  .admin-order-item {
+    padding: 7px 0;
+  }
+
+  .admin-order-item strong {
+    display: -webkit-box;
+    font-size: 0.82rem;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+  }
+
+  .admin-order-progress {
+    margin: 10px 0;
+  }
+
   .admin-order-steps {
-    grid-template-columns: 1fr;
-    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    gap: 4px;
+    text-align: center;
   }
 
   .admin-order-step {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    text-align: left;
+    display: block;
+    text-align: center;
   }
 
   .admin-order-step p {
-    margin: 0;
+    display: none;
+  }
+
+  .admin-order-step span {
+    width: 22px;
+    height: 22px;
+    font-size: 0.68rem;
+  }
+
+  .admin-order-actions {
+    gap: 8px;
+  }
+
+  .admin-checklist-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .admin-checklist-card {
+    padding: 11px;
+    border-radius: 12px;
+  }
+
+  .admin-checklist-toolbar {
+    margin-bottom: 12px;
+    padding: 11px;
+    border-radius: 12px;
+  }
+
+  .admin-checklist-top h4 {
+    font-size: 0.9rem;
+    -webkit-line-clamp: 1;
+  }
+
+  .admin-checklist-meta {
+    margin: 9px 0;
+    gap: 6px;
+    font-size: 0.78rem;
+  }
+
+  .admin-checklist-toggle {
+    min-height: 42px;
+    padding: 8px 10px;
+    font-size: 0.82rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .admin-page-head {
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .admin-order-summary {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .admin-order-body {
+    gap: 8px;
   }
 }
