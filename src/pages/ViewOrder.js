@@ -2,7 +2,11 @@ import React, { useEffect, useCallback } from "react";
 import { Checkbox, Table, Tag } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getaOrder, updateAOrder } from "../features/auth/authSlice";
+import {
+  getaOrder,
+  updateAOrder,
+  updateOrderItemAvailabilityLocal,
+} from "../features/auth/authSlice";
 const columns = [
   {
     title: "SNo",
@@ -61,19 +65,41 @@ const ViewOrder = () => {
 
   const orderState = singleorder?.orders;
   const updateAvailability = async (itemId, isAvailable) => {
-    await dispatch(
-      updateAOrder({
+    const availabilityNote = isAvailable ? "" : "Currently not available";
+    dispatch(
+      updateOrderItemAvailabilityLocal({
         id: orderId,
-        availabilityItems: [
-          {
-            itemId,
-            isAvailable,
-            availabilityNote: isAvailable ? "" : "Currently not available",
-          },
-        ],
+        orderId,
+        itemId,
+        isAvailable,
+        availabilityNote,
       })
     );
-    loadOrder();
+
+    try {
+      await dispatch(
+        updateAOrder({
+          id: orderId,
+          availabilityItems: [
+            {
+              itemId,
+              isAvailable,
+              availabilityNote,
+            },
+          ],
+        })
+      ).unwrap();
+    } catch (error) {
+      loadOrder();
+    }
+  };
+
+  const updateOrderStatus = async (status) => {
+    try {
+      await dispatch(updateAOrder({ id: orderId, status })).unwrap();
+    } catch (error) {
+      loadOrder();
+    }
   };
 
   const data1 = (orderState?.orderItems || []).map((item, index) => ({
@@ -121,6 +147,24 @@ const ViewOrder = () => {
       {isError && (
         <div className="alert alert-danger">
           {typeof message === "string" ? message : "Unable to load order"}
+        </div>
+      )}
+      {orderState && (
+        <div className="mb-4">
+          <label className="form-label fw-semibold">Order Action</label>
+          <select
+            value={orderState?.orderStatus || "Ordered"}
+            onChange={(e) => updateOrderStatus(e.target.value)}
+            className="form-control form-select"
+          >
+            <option value="Ordered" disabled>
+              Ordered
+            </option>
+            <option value="Processed">Processed</option>
+            <option value="Shipped">Shipped</option>
+            <option value="Out for Delivery">Out for Delivery</option>
+            <option value="Delivered">Delivered</option>
+          </select>
         </div>
       )}
       <div>

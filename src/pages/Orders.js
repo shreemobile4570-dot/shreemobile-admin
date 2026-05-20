@@ -54,8 +54,9 @@ const Orders = () => {
   ];
 
   // ✅ Update Order Status
-  const updateOrderStatus = (id, status) => {
-    dispatch(updateAOrder({ id, status }));
+  const updateOrderStatus = async (id, status) => {
+    await dispatch(updateAOrder({ id, status }));
+    dispatch(getOrders({ params: { limit: 100 } }));
   };
 
   // ✅ Table Data

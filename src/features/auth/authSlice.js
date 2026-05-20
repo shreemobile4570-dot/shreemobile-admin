@@ -86,7 +86,39 @@ export const getYearlyData = createAsyncThunk(
 export const authSlice = createSlice({
   name: "auth",
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    updateOrderItemAvailabilityLocal: (state, action) => {
+      const { orderId, itemId, isAvailable, availabilityNote } = action.payload;
+      const applyAvailability = (order) => {
+        if (!order || order._id !== orderId) return order;
+        return {
+          ...order,
+          orderItems: order.orderItems?.map((item) =>
+            item._id === itemId
+              ? {
+                  ...item,
+                  isAvailable,
+                  availabilityNote:
+                    availabilityNote ||
+                    (isAvailable ? "" : "Currently not available"),
+                }
+              : item
+          ),
+        };
+      };
+
+      if (state.singleorder?.orders?._id === orderId) {
+        state.singleorder = {
+          ...state.singleorder,
+          orders: applyAvailability(state.singleorder.orders),
+        };
+      }
+
+      if (state.orders?.orders?.length) {
+        state.orders.orders = state.orders.orders.map(applyAvailability);
+      }
+    },
+  },
   extraReducers: (buildeer) => {
     buildeer
       .addCase(login.pending, (state) => {
@@ -122,7 +154,7 @@ export const authSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(updateAOrder.pending, (state) => {
-        state.isLoading = true;
+        state.isError = false;
       })
       .addCase(updateAOrder.fulfilled, (state, action) => {
         state.isError = false;
@@ -201,3 +233,4 @@ export const authSlice = createSlice({
 });
 
 export default authSlice.reducer;
+export const { updateOrderItemAvailabilityLocal } = authSlice.actions;
