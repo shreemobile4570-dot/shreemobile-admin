@@ -393,6 +393,54 @@
   background: rgba(180, 35, 24, 0.1);
 }
 
+.admin-customer-cards {
+  display: none;
+}
+
+.admin-customer-list-card {
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.64);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 12px 30px rgba(33, 37, 41, 0.08);
+}
+
+.admin-customer-list-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.admin-customer-list-top h4 {
+  margin: 4px 0;
+  color: var(--color-212529);
+  font-size: 0.96rem;
+  font-weight: 800;
+}
+
+.admin-customer-list-top p,
+.admin-customer-address {
+  margin: 0;
+  color: var(--color-828599);
+  font-size: 0.82rem;
+  overflow-wrap: anywhere;
+}
+
+.admin-customer-address {
+  margin-top: 10px;
+  padding: 9px 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.54);
+}
+
+.admin-customer-actions {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  margin-top: 10px;
+}
+
 @media (max-width: 1100px) {
   .admin-order-summary {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -554,16 +602,18 @@
   }
 
   .admin-checklist-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 10px;
   }
 
   .admin-checklist-card {
+    min-width: 0;
     padding: 11px;
     border-radius: 12px;
   }
 
   .admin-checklist-toolbar {
+    min-width: 0;
     margin-bottom: 12px;
     padding: 11px;
     border-radius: 12px;
@@ -575,6 +625,7 @@
   }
 
   .admin-checklist-meta {
+    grid-template-columns: 1fr 1fr;
     margin: 9px 0;
     gap: 6px;
     font-size: 0.78rem;
@@ -584,6 +635,24 @@
     min-height: 42px;
     padding: 8px 10px;
     font-size: 0.82rem;
+  }
+
+  .admin-desktop-table {
+    display: none;
+  }
+
+  .admin-customer-cards {
+    display: grid;
+    gap: 10px;
+  }
+
+  .admin-customer-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-customer-actions .ant-select,
+  .admin-customer-actions .ant-btn {
+    width: 100%;
   }
 }
 

@@ -42,6 +42,14 @@ const MainLayout = () => {
             <span className="sm-logo">CC</span>
             <span className="lg-logo">Cart Corner</span>
           </h2>
+          <button
+            type="button"
+            className="admin-sider-toggle"
+            onClick={() => setCollapsed(!collapsed)}
+            aria-label={collapsed ? "Open menu" : "Close menu"}
+          >
+            {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined)}
+          </button>
         </div>
         <Menu
           theme="dark"
@@ -193,13 +201,14 @@ const MainLayout = () => {
             background: colorBgContainer,
           }}
         >
-          {React.createElement(
-            collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-            {
-              className: "trigger",
-              onClick: () => setCollapsed(!collapsed),
-            }
-          )}
+          <button
+            type="button"
+            className="trigger admin-floating-trigger"
+            onClick={() => setCollapsed(!collapsed)}
+            aria-label={collapsed ? "Open menu" : "Close menu"}
+          >
+            {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined)}
+          </button>
           <div className="admin-profile d-flex gap-4 align-items-center">
             <div className="d-flex gap-3 align-items-center dropdown">
               <div>

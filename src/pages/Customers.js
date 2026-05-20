@@ -106,14 +106,63 @@ const Customers = () => {
   }));
 
   return (
-    <div>
-      <h3 className="mb-4 title">Customers</h3>
-      <Table
-        columns={columns}
-        dataSource={data}
-        loading={isLoading}
-        scroll={{ x: 1100 }}
-      />
+    <div className="admin-customers-page">
+      <div className="admin-page-head">
+        <div>
+          <span>Accounts</span>
+          <h3 className="title mb-0">Customers</h3>
+        </div>
+        <p>{data.length} customer{data.length === 1 ? "" : "s"}</p>
+      </div>
+
+      <div className="admin-desktop-table">
+        <Table
+          columns={columns}
+          dataSource={data}
+          loading={isLoading}
+          scroll={{ x: 1100 }}
+        />
+      </div>
+
+      <div className="admin-customer-cards">
+        {data.map((customer) => (
+          <article className="admin-customer-list-card" key={customer.id}>
+            <div className="admin-customer-list-top">
+              <div>
+                <span className="admin-order-label">Customer</span>
+                <h4>{customer.name || "Customer"}</h4>
+                <p>{customer.email || "Email not available"}</p>
+                <p>{customer.mobile || "Phone not available"}</p>
+              </div>
+              {customer.isBlocked ? (
+                <Tag color="red">Blocked</Tag>
+              ) : (
+                <Tag color="green">Active</Tag>
+              )}
+            </div>
+
+            <div className="admin-customer-address">
+              {customer.address || "Address not available"}
+            </div>
+
+            <div className="admin-customer-actions">
+              <Select
+                value={customer.role}
+                options={roleOptions}
+                onChange={(role) => handleRoleChange(customer.id, role)}
+              />
+              <Button
+                danger={!customer.isBlocked}
+                type={customer.isBlocked ? "default" : "primary"}
+                onClick={() => handleBlockToggle(customer)}
+              >
+                {customer.isBlocked ? "Unblock" : "Block"}
+              </Button>
+            </div>
+          </article>
+        ))}
+        {isLoading && <div className="admin-empty-state">Loading customers...</div>}
+      </div>
     </div>
   );
 };
