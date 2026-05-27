@@ -16,6 +16,7 @@ import { Outlet } from "react-router-dom";
 import { ImBlog } from "react-icons/im";
 import { FaClipboardList, FaBloggerB } from "react-icons/fa";
 import { FaRulerCombined } from "react-icons/fa";
+import { MdCompareArrows } from "react-icons/md";
 import { SiBrandfolder } from "react-icons/si";
 import { BiCategoryAlt } from "react-icons/bi";
 import { Layout, Menu, theme } from "antd";
@@ -128,6 +129,16 @@ const MainLayout = () => {
                   key: "list-size",
                   icon: <FaRulerCombined className="fs-4" />,
                   label: "Size List",
+                },
+                {
+                  key: "compatibility",
+                  icon: <MdCompareArrows className="fs-4" />,
+                  label: "Add Compatibility",
+                },
+                {
+                  key: "list-compatibility",
+                  icon: <MdCompareArrows className="fs-4" />,
+                  label: "Compatibility List",
                 },
               ],
             },

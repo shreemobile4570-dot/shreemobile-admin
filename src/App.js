@@ -25,6 +25,8 @@ import Couponlist from "./pages/Couponlist";
 import AddCoupon from "./pages/AddCoupon";
 import ViewEnq from "./pages/ViewEnq";
 import ViewOrder from "./pages/ViewOrder";
+import AddCompatibility from "./pages/AddCompatibility";
+import CompatibilityList from "./pages/CompatibilityList";
 import { OpenRoutes } from "./routing/OpenRoutes";
 import { PrivateRoutes } from "./routing/PrivateRoutes";
 function App() {
@@ -79,6 +81,9 @@ function App() {
           <Route path="list-product" element={<Productlist />} />
           <Route path="product" element={<Addproduct />} />
           <Route path="product/:id" element={<Addproduct />} />
+          <Route path="list-compatibility" element={<CompatibilityList />} />
+          <Route path="compatibility" element={<AddCompatibility />} />
+          <Route path="compatibility/:id" element={<AddCompatibility />} />
         </Route>
       </Routes>
     </Router>
